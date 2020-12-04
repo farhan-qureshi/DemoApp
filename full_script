@@ -1,0 +1,400 @@
+USE [master]
+GO
+/****** Object:  Database [Interests]    Script Date: 04/12/2020 11:58:20 ******/
+CREATE DATABASE [Interests]
+ CONTAINMENT = NONE
+ ON  PRIMARY 
+( NAME = N'Interests', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL13.MSSQLSERVER\MSSQL\DATA\Interests.mdf' , SIZE = 8192KB , MAXSIZE = UNLIMITED, FILEGROWTH = 65536KB )
+ LOG ON 
+( NAME = N'Interests_log', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL13.MSSQLSERVER\MSSQL\DATA\Interests_log.ldf' , SIZE = 8192KB , MAXSIZE = 2048GB , FILEGROWTH = 65536KB )
+GO
+ALTER DATABASE [Interests] SET COMPATIBILITY_LEVEL = 130
+GO
+IF (1 = FULLTEXTSERVICEPROPERTY('IsFullTextInstalled'))
+begin
+EXEC [Interests].[dbo].[sp_fulltext_database] @action = 'enable'
+end
+GO
+ALTER DATABASE [Interests] SET ANSI_NULL_DEFAULT OFF 
+GO
+ALTER DATABASE [Interests] SET ANSI_NULLS OFF 
+GO
+ALTER DATABASE [Interests] SET ANSI_PADDING OFF 
+GO
+ALTER DATABASE [Interests] SET ANSI_WARNINGS OFF 
+GO
+ALTER DATABASE [Interests] SET ARITHABORT OFF 
+GO
+ALTER DATABASE [Interests] SET AUTO_CLOSE OFF 
+GO
+ALTER DATABASE [Interests] SET AUTO_SHRINK OFF 
+GO
+ALTER DATABASE [Interests] SET AUTO_UPDATE_STATISTICS ON 
+GO
+ALTER DATABASE [Interests] SET CURSOR_CLOSE_ON_COMMIT OFF 
+GO
+ALTER DATABASE [Interests] SET CURSOR_DEFAULT  GLOBAL 
+GO
+ALTER DATABASE [Interests] SET CONCAT_NULL_YIELDS_NULL OFF 
+GO
+ALTER DATABASE [Interests] SET NUMERIC_ROUNDABORT OFF 
+GO
+ALTER DATABASE [Interests] SET QUOTED_IDENTIFIER OFF 
+GO
+ALTER DATABASE [Interests] SET RECURSIVE_TRIGGERS OFF 
+GO
+ALTER DATABASE [Interests] SET  DISABLE_BROKER 
+GO
+ALTER DATABASE [Interests] SET AUTO_UPDATE_STATISTICS_ASYNC OFF 
+GO
+ALTER DATABASE [Interests] SET DATE_CORRELATION_OPTIMIZATION OFF 
+GO
+ALTER DATABASE [Interests] SET TRUSTWORTHY OFF 
+GO
+ALTER DATABASE [Interests] SET ALLOW_SNAPSHOT_ISOLATION OFF 
+GO
+ALTER DATABASE [Interests] SET PARAMETERIZATION SIMPLE 
+GO
+ALTER DATABASE [Interests] SET READ_COMMITTED_SNAPSHOT OFF 
+GO
+ALTER DATABASE [Interests] SET HONOR_BROKER_PRIORITY OFF 
+GO
+ALTER DATABASE [Interests] SET RECOVERY FULL 
+GO
+ALTER DATABASE [Interests] SET  MULTI_USER 
+GO
+ALTER DATABASE [Interests] SET PAGE_VERIFY CHECKSUM  
+GO
+ALTER DATABASE [Interests] SET DB_CHAINING OFF 
+GO
+ALTER DATABASE [Interests] SET FILESTREAM( NON_TRANSACTED_ACCESS = OFF ) 
+GO
+ALTER DATABASE [Interests] SET TARGET_RECOVERY_TIME = 60 SECONDS 
+GO
+ALTER DATABASE [Interests] SET DELAYED_DURABILITY = DISABLED 
+GO
+ALTER DATABASE [Interests] SET QUERY_STORE = OFF
+GO
+USE [Interests]
+GO
+ALTER DATABASE SCOPED CONFIGURATION SET LEGACY_CARDINALITY_ESTIMATION = OFF;
+GO
+ALTER DATABASE SCOPED CONFIGURATION SET MAXDOP = 0;
+GO
+ALTER DATABASE SCOPED CONFIGURATION SET PARAMETER_SNIFFING = ON;
+GO
+ALTER DATABASE SCOPED CONFIGURATION SET QUERY_OPTIMIZER_HOTFIXES = OFF;
+GO
+USE [Interests]
+GO
+/****** Object:  Table [dbo].[ConsumerInterest]    Script Date: 04/12/2020 11:58:21 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[ConsumerInterest](
+	[ConsumerInterestId] [int] IDENTITY(1,1) NOT NULL,
+	[UserId] [int] NULL,
+	[InterestId] [int] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[ConsumerInterestId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[ContributorInterest]    Script Date: 04/12/2020 11:58:22 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[ContributorInterest](
+	[ContributorInterestId] [int] IDENTITY(1,1) NOT NULL,
+	[UserId] [int] NULL,
+	[InterestId] [int] NULL,
+	[ApiKey] [uniqueidentifier] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[ContributorInterestId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[ContributorInterestContent]    Script Date: 04/12/2020 11:58:22 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[ContributorInterestContent](
+	[ContributorInterestContent] [int] IDENTITY(1,1) NOT NULL,
+	[ContributorInterestId] [int] NULL,
+	[Content] [nvarchar](1024) NULL
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Interest]    Script Date: 04/12/2020 11:58:22 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Interest](
+	[InterestId] [int] IDENTITY(1,1) NOT NULL,
+	[Title] [nvarchar](128) NULL,
+	[Description] [nvarchar](512) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[InterestId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[User]    Script Date: 04/12/2020 11:58:22 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[User](
+	[UserId] [int] IDENTITY(1,1) NOT NULL,
+	[userName] [nvarchar](64) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[UserId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+SET IDENTITY_INSERT [dbo].[ConsumerInterest] ON 
+
+INSERT [dbo].[ConsumerInterest] ([ConsumerInterestId], [UserId], [InterestId]) VALUES (15, 9, 7)
+INSERT [dbo].[ConsumerInterest] ([ConsumerInterestId], [UserId], [InterestId]) VALUES (16, 9, 8)
+INSERT [dbo].[ConsumerInterest] ([ConsumerInterestId], [UserId], [InterestId]) VALUES (17, 9, 1009)
+SET IDENTITY_INSERT [dbo].[ConsumerInterest] OFF
+SET IDENTITY_INSERT [dbo].[ContributorInterest] ON 
+
+INSERT [dbo].[ContributorInterest] ([ContributorInterestId], [UserId], [InterestId], [ApiKey]) VALUES (12, 9, 7, N'e4e28788-15e2-472f-8689-a70126cce0aa')
+INSERT [dbo].[ContributorInterest] ([ContributorInterestId], [UserId], [InterestId], [ApiKey]) VALUES (1002, 9, 8, N'4b13c1e3-50c7-4d4c-9abe-8e6f26661ae4')
+INSERT [dbo].[ContributorInterest] ([ContributorInterestId], [UserId], [InterestId], [ApiKey]) VALUES (1003, 9, 1008, N'c2170b15-0880-478a-a3fe-85b76f0fab4f')
+INSERT [dbo].[ContributorInterest] ([ContributorInterestId], [UserId], [InterestId], [ApiKey]) VALUES (1004, 9, 1009, N'a6983d35-eb13-4370-8ba7-aa5b03e8649a')
+INSERT [dbo].[ContributorInterest] ([ContributorInterestId], [UserId], [InterestId], [ApiKey]) VALUES (1005, 9, 1010, N'43581f12-171d-46ea-b267-10452f5efd0e')
+INSERT [dbo].[ContributorInterest] ([ContributorInterestId], [UserId], [InterestId], [ApiKey]) VALUES (1006, 9, 1011, N'eadfaa7b-257d-4d19-a658-94975d54e2ba')
+SET IDENTITY_INSERT [dbo].[ContributorInterest] OFF
+SET IDENTITY_INSERT [dbo].[ContributorInterestContent] ON 
+
+INSERT [dbo].[ContributorInterestContent] ([ContributorInterestContent], [ContributorInterestId], [Content]) VALUES (1, 12, N'Fishing is the activity of trying to catch fish. Fish are normally caught in the wild. Techniques for catching fish include hand gathering, spearing, netting, angling and trapping. “Fishing” may include catching aquatic animals other than fish, such as molluscs, cephalopods, crustaceans, and echinoderms. The term is not normally applied to catching farmed fish, or to aquatic mammals, such as whales where the term whaling is more appropriate. In addition to being caught to be eaten, fish are caught as recreational pastimes. Fishing tournaments are held, and caught fish are sometimes kept as preserved or living trophies. When bioblitzes occur, fish are typically caught, identified, and then released.')
+INSERT [dbo].[ContributorInterestContent] ([ContributorInterestContent], [ContributorInterestId], [Content]) VALUES (3, 1002, N'Shopping is an activity in which a customer browses the available goods or services presented by one or more retailers with the potential intent to purchase a suitable selection of them. A typology of shopper types has been developed by scholars which identifies one group of shoppers as recreational shoppers that is, those who enjoy shopping and view it as a leisure activity.')
+INSERT [dbo].[ContributorInterestContent] ([ContributorInterestContent], [ContributorInterestId], [Content]) VALUES (4, 1003, N'Hiking is a long, vigorous walk, usually on trails or footpaths in the countryside. Walking for pleasure developed in Europe during the eighteenth century. Religious pilgrimages have existed much longer but they involve walking long distances for a spiritual purpose associated with specific religions. Hiking is the preferred term in Canada and the United States; the term "walking" is used in these regions for shorter, particularly urban walks. In the United Kingdom and the Republic of Ireland, the word "walking" describes all forms of walking, whether it is a walk in the park or backpacking in the Alps')
+INSERT [dbo].[ContributorInterestContent] ([ContributorInterestContent], [ContributorInterestId], [Content]) VALUES (5, 1004, N'The meaning of health has evolved over time. In keeping with the biomedical perspective, early definitions of health focused on the theme of the bodys ability to function; health was seen as a state of normal function that could be disrupted from time to time by disease. An example of such a definition of health is: "a state characterized by anatomic, physiologic, and psychological integrity; ability to perform personally valued family, work, and community roles; ability to deal with physical, biological, psychological, and social stress')
+INSERT [dbo].[ContributorInterestContent] ([ContributorInterestContent], [ContributorInterestId], [Content]) VALUES (6, 1005, N'This is in contrast to walking, where one foot is always in contact with the ground, the legs are kept mostly straight and the center of gravity vaults over the stance leg or legs in an inverted pendulum fashion.[2] A feature of a running body from the viewpoint of spring-mass mechanics is that changes in kinetic and potential energy within a stride occur simultaneously, with energy storage accomplished by springy tendons and passive muscle elasticity.')
+INSERT [dbo].[ContributorInterestContent] ([ContributorInterestContent], [ContributorInterestId], [Content]) VALUES (7, 1006, N'Humans can hold their breath underwater and undertake rudimentary locomotive swimming within weeks of birth, as a survival response. Swimming is consistently among the top public recreational activities,[2][3][4][5] and in some countries, swimming lessons are a compulsory part of the educational curriculum')
+SET IDENTITY_INSERT [dbo].[ContributorInterestContent] OFF
+SET IDENTITY_INSERT [dbo].[Interest] ON 
+
+INSERT [dbo].[Interest] ([InterestId], [Title], [Description]) VALUES (7, N'Fishing', N'Fishing is the activity of trying to catch fish. Fish are normally caught in the wild.')
+INSERT [dbo].[Interest] ([InterestId], [Title], [Description]) VALUES (8, N'Shopping', N'Shopping is an activity in which a customer browses the available goods or services presented by one or more retailers with the potential intent to purchase a suitable selection of them.')
+INSERT [dbo].[Interest] ([InterestId], [Title], [Description]) VALUES (1008, N'Hiking', N'Hiking is a long, vigorous walk, usually on trails or footpaths in the countryside. Walking for pleasure developed in Europe during the eighteenth century. Religious pilgrimages have existed much longer but they involve walking long distances for a spiritual purpose associated with specific religions.')
+INSERT [dbo].[Interest] ([InterestId], [Title], [Description]) VALUES (1009, N'Health', N'The meaning of health has evolved over time. In keeping with the biomedical perspective, early definitions of health focused on the theme of the bodys ability to function; health was seen as a state of normal function that could be disrupted from time to time by disease.')
+INSERT [dbo].[Interest] ([InterestId], [Title], [Description]) VALUES (1010, N'Running', N'Running is a method of terrestrial locomotion allowing humans and other animals to move rapidly on foot. Running is a type of gait characterized by an aerial phase in which all feet are above the ground (though there are exceptions).')
+INSERT [dbo].[Interest] ([InterestId], [Title], [Description]) VALUES (1011, N'Swimming', N'Swimming is the self-propulsion of a person through water, usually for recreation, sport, exercise, or survival. Locomotion is achieved through coordinated movement of the limbs, the body, or both.')
+SET IDENTITY_INSERT [dbo].[Interest] OFF
+SET IDENTITY_INSERT [dbo].[User] ON 
+
+INSERT [dbo].[User] ([UserId], [userName]) VALUES (9, N'user2')
+SET IDENTITY_INSERT [dbo].[User] OFF
+ALTER TABLE [dbo].[ConsumerInterest]  WITH CHECK ADD FOREIGN KEY([InterestId])
+REFERENCES [dbo].[Interest] ([InterestId])
+GO
+ALTER TABLE [dbo].[ConsumerInterest]  WITH CHECK ADD FOREIGN KEY([UserId])
+REFERENCES [dbo].[User] ([UserId])
+GO
+ALTER TABLE [dbo].[ContributorInterest]  WITH CHECK ADD FOREIGN KEY([InterestId])
+REFERENCES [dbo].[Interest] ([InterestId])
+GO
+ALTER TABLE [dbo].[ContributorInterest]  WITH CHECK ADD FOREIGN KEY([UserId])
+REFERENCES [dbo].[User] ([UserId])
+GO
+/****** Object:  StoredProcedure [dbo].[CreateInterest]    Script Date: 04/12/2020 11:58:22 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[CreateInterest]
+(
+	@apiKey UNIQUEIDENTIFIER,
+	@content NVARCHAR(2048)
+)
+AS
+BEGIN
+	DECLARE @ContributorInterestId INT = (SELECT ContributorInterestId FROM [dbo].[ContributorInterest] WHERE ApiKey = @apiKey)
+
+	IF @ContributorInterestId IS NOT NULL AND @ContributorInterestId > 0
+	BEGIN
+		IF EXISTS (SELECT 1 FROM [dbo].[ContributorInterestContent] WHERE ContributorInterestId = @ContributorInterestId)
+		BEGIN
+			UPDATE [dbo].[ContributorInterestContent] SET Content = @content WHERE ContributorInterestId = @ContributorInterestId
+		END
+		ELSE
+		BEGIN
+			INSERT INTO [dbo].[ContributorInterestContent] VALUES (@ContributorInterestId, @content)
+		END
+	END
+END
+GO
+/****** Object:  StoredProcedure [dbo].[GetAll]    Script Date: 04/12/2020 11:58:22 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[GetAll]
+AS
+BEGIN
+	SELECT * FROM [dbo].[Interest]
+END
+GO
+/****** Object:  StoredProcedure [dbo].[GetAllForUser]    Script Date: 04/12/2020 11:58:22 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[GetAllForUser]
+(
+	@userName NVARCHAR(64)
+)
+AS
+BEGIN
+	SELECT I.*, 
+	CASE U.userName WHEN @userName THEN 1 ELSE 0 END AS IsSubscribedTo
+	FROM [dbo].[Interest] I
+	LEFT OUTER JOIN [dbo].[ConsumerInterest] CI ON I.InterestId = CI.InterestId
+	LEFT OUTER  JOIN [dbo].[User] U ON CI.UserId = U.UserId
+END
+GO
+/****** Object:  StoredProcedure [dbo].[GetAllUsers]    Script Date: 04/12/2020 11:58:22 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[GetAllUsers]
+AS
+BEGIN
+	SELECT U.* FROM [dbo].[User] U
+	INNER JOIN [dbo].[ConsumerInterest] CI ON U.UserId = CI.UserId
+END
+GO
+/****** Object:  StoredProcedure [dbo].[GetContentByTitle]    Script Date: 04/12/2020 11:58:22 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[GetContentByTitle]
+(
+	@title NVARCHAR(64)
+)
+AS
+BEGIN
+	select cic.Content from ContributorInterestContent cic
+	inner join ContributorInterest ci on cic.ContributorInterestId = ci.ContributorInterestId
+	inner join Interest i  on i.InterestId = ci.InterestId
+	where i.Title = @title
+END
+GO
+/****** Object:  StoredProcedure [dbo].[RegisterInterest]    Script Date: 04/12/2020 11:58:22 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[RegisterInterest]
+(
+	@userName NVARCHAR(64),
+	@title NVARCHAR(64),
+	@description NVARCHAR(512)
+)
+AS
+BEGIN
+	DECLARE @recordInsertionIsRequired BIT = 0
+	DECLARE @UserId INT = (SELECT TOP 1 UserId FROM [dbo].[User] WHERE [userName] = @userName)
+	DECLARE @InterestId INT = (SELECT TOP 1 InterestId FROM [dbo].[Interest] WHERE Title = @title)
+
+	IF @UserId IS NULL OR @UserId = 0
+	BEGIN 
+		INSERT INTO [dbo].[User] VALUES (@userName)
+		SET @UserId = SCOPE_IDENTITY()
+		SET @recordInsertionIsRequired = 1
+	END
+
+	IF @InterestId IS NULL OR @InterestId = 0
+	BEGIN
+		INSERT INTO [dbo].[Interest] VALUES (@title, @description)
+		SET @InterestId = SCOPE_IDENTITY()
+		SET @recordInsertionIsRequired = 1
+	END
+
+	IF @recordInsertionIsRequired = 1
+	BEGIN
+		INSERT INTO [dbo].[ContributorInterest] VALUES (@UserId, @InterestId, NEWID())
+	END
+
+	SELECT ApiKey FROM [dbo].[ContributorInterest] CI
+	INNER JOIN [dbo].[User] U ON CI.UserId = U.UserId
+	INNER JOIN [dbo].[Interest] I ON I.InterestId = CI.InterestId
+	WHERE U.userName = @userName
+	AND I.Title = @Title
+END
+GO
+/****** Object:  StoredProcedure [dbo].[SubscribeInterest]    Script Date: 04/12/2020 11:58:22 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[SubscribeInterest]
+(
+	@userName NVARCHAR(64),
+	@title NVARCHAR(64),
+	@description NVARCHAR(512) = null
+)
+AS
+BEGIN
+	DECLARE @UserId INT = (SELECT TOP 1 UserId FROM [dbo].[User] WHERE [userName] = @userName)
+	DECLARE @InterestId INT = (SELECT TOP 1 InterestId FROM [dbo].[Interest] WHERE Title = @title)
+	DECLARE @recordExists BIT = 0
+
+	IF EXISTS (SELECT 1 FROM [dbo].[ConsumerInterest] WHERE UserId = @UserId AND InterestId = @InterestId)
+		SET @recordExists = 1
+	ELSE
+		SET @recordExists = 0
+
+	IF @UserId IS NULL OR @UserId = 0
+	BEGIN 
+		INSERT INTO [dbo].[User] VALUES (@userName)
+		SET @UserId = SCOPE_IDENTITY()
+	END
+
+	IF @InterestId IS NULL OR @InterestId = 0
+	BEGIN
+		INSERT INTO [dbo].[Interest] VALUES (@title, @description)
+		SET @InterestId = SCOPE_IDENTITY()
+	END
+
+	IF @recordExists = 0
+	BEGIN
+		INSERT INTO [dbo].[ConsumerInterest] VALUES (@UserId, @InterestId)
+	END
+END
+GO
+/****** Object:  StoredProcedure [dbo].[UnSubscribeInterest]    Script Date: 04/12/2020 11:58:22 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[UnSubscribeInterest]
+(
+	@userName NVARCHAR(64),
+	@title NVARCHAR(64)
+)
+AS
+BEGIN
+	DECLARE @recordInsertionIsRequired BIT = 0
+	DECLARE @UserId INT = (SELECT TOP 1 UserId FROM [dbo].[User] WHERE [userName] = @userName)
+	DECLARE @InterestId INT = (SELECT TOP 1 InterestId FROM [dbo].[Interest] WHERE Title = @title)
+
+	DELETE FROM [dbo].[ConsumerInterest] WHERE UserId = @UserId AND InterestId = @InterestId
+END
+GO
+USE [master]
+GO
+ALTER DATABASE [Interests] SET  READ_WRITE 
+GO
